@@ -1,0 +1,22 @@
+apiVersion: infra.terraform.zombor.net/v1alpha1
+kind: Terraform
+metadata:
+  labels:
+    app.kubernetes.io/name: terraform
+    app.kubernetes.io/instance: terraform-sample
+    app.kubernetes.io/part-of: terraform-operator
+    app.kubernetes.io/managed-by: kustomize
+    app.kubernetes.io/created-by: terraform-operator
+  name: terraform-sample
+spec:
+  hcl: |
+    terraform {
+      backend "kubernetes" {
+        secret_suffix    = "state"
+        config_path      = "~/.kube/config"
+      }
+    }
+    provider "aws" {}
+    resource "aws_s3_bucket" "jbush_test" {
+      bucket = "jbush-test"
+    }
